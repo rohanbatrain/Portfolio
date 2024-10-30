@@ -60,15 +60,17 @@ jobs:
         echo "$new_version" > ./Resume/VERSION.txt
         echo "::set-output name=new_version::$new_version"
 
+
     - name: Create Release
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: v${{ steps.increment_version.outputs.new_version }}  # Tag based on new version
-        name: "Resume v${{ steps.increment_version.outputs.new_version }}"  # Use name instead of release_name
+        release_name: "Resume v${{ steps.increment_version.outputs.new_version }}"  # Use release_name instead of name
         files: ./Resume.pdf
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
     - name: Update README.md
       run: |
