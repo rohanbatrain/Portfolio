@@ -1,28 +1,81 @@
-name: LaTeX Document Build and Upload
+name: Compile Resume and Release
 
 on:
   push:
     branches:
-      - main  # Adjust to your default branch if necessary
+      - main  # Change this to your default branch if necessary
 
 jobs:
-  build_latex:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up Git repository
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: Resume/Resume.tex  # Change to your main .tex file path
-          extra_system_packages: "texlive-fontawesome"  # Install FontAwesome package
-          texlive_version: latest  # Use the latest TeXLive version
-          latexmk_use_xelatex: true  # Use XeLaTeX for compiling
+    - name: Set up TeX Live
+      run: |
+        sudo apt-get install texlive-full
 
-      - name: Upload PDF file
-        uses: actions/upload-artifact@v4
-        with:
-          name: Compiled PDF
-          path: Resume/resume.pdf  # Change to match your output file path
+    - name: Compile LaTeX to PDF
+      run: |
+        pdflatex resume.tex
+        pdflatex resume.tex  # Run twice to resolve references
+
+    - name: Read current version
+      id: read_version
+      run: |
+        current_version=$(cat VERSION.txt)
+        echo "Current version is $current_version"
+        echo "::set-output name=current_version::$current_version"
+
+    - name: Increment version
+      id: increment_version
+      run: |
+        IFS='.' read -r major minor patch <<< "${{ steps.read_version.outputs.current_version }}"
+        
+        # Check if the patch is 9
+        if [ "$patch" -eq 9 ]; then
+          patch=0
+          minor=$((minor + 1))  # Increment minor if patch is 9
+          
+          # Check if the minor is 10
+          if [ "$minor" -eq 10 ]; then
+            minor=0
+            major=$((major + 1))  # Increment major if minor is 10
+          fi
+        else
+          patch=$((patch + 1))  # Otherwise, increment patch
+        fi
+        
+        new_version="$major.$minor.$patch"
+        echo "New version is $new_version"
+        echo "$new_version" > VERSION.txt
+        echo "::set-output name=new_version::$new_version"
+
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.increment_version.outputs.new_version }}  # Tag based on new version
+        release_name: "Resume v${{ steps.increment_version.outputs.new_version }}"
+        files: resume.pdf
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update README.md
+      run: |
+        version="v${{ steps.increment_version.outputs.new_version }}"
+        if grep -q "Current Resume Version:" README.md; then
+          sed -i "s/Current Resume Version: .*/Current Resume Version: $version/g" README.md
+        else
+          echo "Current Resume Version: $version" >> README.md
+        fi
+
+    - name: Commit and Push Changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add VERSION.txt README.md
+        git commit -m "Update version to $version" || echo "No changes to commit"
+        git push
