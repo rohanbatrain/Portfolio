@@ -19,14 +19,14 @@ jobs:
         sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra
 
     - name: Compile LaTeX to PDF
-      working-directory: Portfolio/Resume  # Update to your directory
+      working-directory: ./Resume  # Update to your directory
       run: |
         pdflatex resume.tex
         pdflatex resume.tex  # Run twice to resolve references
 
     - name: Read current version
       id: read_version
-      working-directory: Portfolio/Resume  # Update to your directory
+      working-directory: ./Resume  # Update to your directory
       run: |
         current_version=$(cat VERSION.txt)
         echo "Current version is $current_version"
@@ -34,7 +34,7 @@ jobs:
 
     - name: Increment version
       id: increment_version
-      working-directory: Portfolio/Resume  # Update to your directory
+      working-directory: ./Resume  # Update to your directory
       run: |
         IFS='.' read -r major minor patch <<< "${{ steps.read_version.outputs.current_version }}"
         
@@ -63,12 +63,12 @@ jobs:
       with:
         tag_name: v${{ steps.increment_version.outputs.new_version }}  # Tag based on new version
         release_name: "Resume v${{ steps.increment_version.outputs.new_version }}"
-        files: Portfolio/Resume/resume.pdf  # Update path to the generated PDF
+        files: ./Resume/resume.pdf  # Update path to the generated PDF
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Update README.md
-      working-directory: Portfolio/Resume  # Update to your directory
+      working-directory: ./Resume  # Update to your directory
       run: |
         version="v${{ steps.increment_version.outputs.new_version }}"
         if grep -q "Current Resume Version:" README.md; then
@@ -78,7 +78,7 @@ jobs:
         fi
 
     - name: Commit and Push Changes
-      working-directory: Portfolio/Resume  # Update to your directory
+      working-directory: ./Resume  # Update to your directory
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
