@@ -1,1 +1,136 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage{fontawesome}
 
+% Hyperlink setup
+\hypersetup{
+    colorlinks=true,
+    urlcolor=blue,
+}
+
+% Header formatting
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+
+% Title Formatting
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titleformat{\subsection}[runin]{\bfseries}{}{0em}{}[.]
+
+% Begin Document
+\begin{document}
+
+% Header
+\begin{center}
+    {\Huge \textbf{Rohan Batra}} \\[6pt]
+    Vikasnagar, Uttarakhand, India \\
+    \small \faEnvelope \hspace{0.1cm} \href{mailto:contact@rohanbatra.in}{contact@rohanbatra.in} \quad 
+    \faPhone \hspace{0.1cm} 7253069231 \quad 
+    \faLinkedinSquare \hspace{0.1cm} \href{https://linkedin.com/in/rohanbatrain}{linkedin.com/in/rohanbatrain} \quad 
+    \faGlobe \hspace{0.1cm} \href{https://rohanbatra.in}{rohanbatra.in} \\
+\end{center}
+
+\vspace{10pt} % Spacing
+
+% Summary Section
+\section*{Summary}
+\noindent
+Motivated software developer with experience in WordPress, Python applications, and Unreal Engine rendering. Passionate about open-source contributions, exemplified through the \textit{Second-Brain-Tools} project. Skilled in Python libraries and problem-solving with a commitment to delivering high-quality work.
+
+% Experience Section
+\section*{Experience}
+
+\subsection*{Co-Founder, Kruxers (Web Development)}
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item Led strategic planning, establishing Kruxers as a scalable web development and hosting solutions provider.
+    \item Directed startup ideation, targeting web hosting solutions for client scalability.
+\end{itemize}
+
+\subsection*{Website Developer, Kruxers}
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item Utilized Git for version control and contributed to CMS development, optimizing website performance.
+    \item Enhanced website user experience by reducing load times and improving content accessibility.
+\end{itemize}
+
+\subsection*{Tech Lead, Kruxers Gaming}
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item Joined an esports venture, applying prior experience to improve branding and operational strategies.
+\end{itemize}
+
+\subsection*{Founder \& CEO, Ravage}
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item Led a small esports team, organizing tournaments and developing a content strategy for YouTube.
+\end{itemize}
+
+% Internship Section
+\section*{Internship}
+
+\subsection*{Intern, Uttarakhand Blind Sports Association (UBSA)}
+\textit{Uttarakhand, India} \hfill \textit{June 2023 – July 2023} \\
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item Collaborated closely with visually impaired athletes, enhancing empathy and understanding of inclusivity.
+    \item Developed a commitment to accessibility and social justice advocacy, supporting the rights of disabled individuals.
+    \item Inspired to leverage skills for awareness campaigns and educational initiatives promoting inclusivity.
+\end{itemize}
+
+% Projects Section
+\section*{Projects}
+
+\subsection*{Development Setup (Personal Project) | April 2023 - Present}
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item Customized Android setups, including ROMs and Magisk; configured Proxmox and Arch Linux systems.
+    \item Managed code using Termux for seamless collaboration directly from Android.
+\end{itemize}
+
+\subsection*{Second-Brain-Tools-2022 (Open Source) | Nov 2022 - Dec 2022}
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item Created a Second Brain toolkit featuring a bookmark manager, personal wiki, and note-taking tools.
+\end{itemize}
+
+\subsection*{LMCottage (Web Development) | Sept 2022 - Oct 2022}
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item Developed a WordPress website, optimizing for performance and troubleshooting.
+\end{itemize}
+
+\subsection*{Pahari Village Resort (3D Render) | Oct 2020 - Dec 2020}
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item Produced immersive 3D renders using Unreal Engine, translating client vision into realistic environments.
+\end{itemize}
+
+% Education Section
+\section*{Education}
+\noindent
+\textbf{Senior Secondary Education} \\
+St. Mary's Convent Sr. Sec. School, Vikasnagar, Dehradun \\
+2023
+
+\noindent
+\textbf{Matriculation} \\
+St. Mary's Convent Sr. Sec. School, Vikasnagar, Dehradun \\
+2021
+
+% Certifications Section
+\section*{Certifications}
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item \textbf{Eureka Junior Semifinalist} - Ecell IIT Bombay | 2022, 2021 \\
+    Semifinalist in entrepreneurial competition, showcasing business acumen and collaboration.
+    \item \textbf{English Essay Writing} - St. Mary's Convent Sr. Sec. School | 2022 \\
+    Achieved first place in English essay competition.
+\end{itemize}
+
+% Skills Section
+\section*{Skills}
+\begin{itemize}[left=0em, itemsep=3pt]
+    \item \textbf{System Setup \& Administration:} Proxmox, Arch Linux, Termux
+    \item \textbf{Android Customization:} Custom ROMs, Magisk, Bootloader unlocking
+    \item \textbf{3D Rendering:} Unreal Engine, textures, camera work
+    \item \textbf{Programming:} Python, terminal applications
+    \item \textbf{Web Development:} WordPress, Git
+\end{itemize}
+
+\end{document}
