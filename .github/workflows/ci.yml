@@ -16,7 +16,7 @@ jobs:
     - name: Set up TeX Live
       run: |
         sudo apt-get update
-        sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra
+        sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra texlive-fontawesome
 
     - name: Compile LaTeX to PDF
       working-directory: ./Resume  # Working directory where Resume.tex is located
