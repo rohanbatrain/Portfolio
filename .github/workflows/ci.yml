@@ -19,13 +19,13 @@ jobs:
 
     - name: Compile LaTeX to PDF
       run: |
-        pdflatex resume.tex
-        pdflatex resume.tex  # Run twice to resolve references
+        pdflatex ./Resume/resume.tex
+        pdflatex ./Resume/resume.tex  # Run twice to resolve references
 
     - name: Read current version
       id: read_version
       run: |
-        current_version=$(cat VERSION.txt)
+        current_version=$(cat ./Resume/VERSION.txt)
         echo "Current version is $current_version"
         echo "::set-output name=current_version::$current_version"
 
@@ -50,7 +50,7 @@ jobs:
         
         new_version="$major.$minor.$patch"
         echo "New version is $new_version"
-        echo "$new_version" > VERSION.txt
+        echo "$new_version" > ./Resume/VERSION.txt
         echo "::set-output name=new_version::$new_version"
 
     - name: Create Release
@@ -59,7 +59,7 @@ jobs:
       with:
         tag_name: v${{ steps.increment_version.outputs.new_version }}  # Tag based on new version
         release_name: "Resume v${{ steps.increment_version.outputs.new_version }}"
-        files: resume.pdf
+        files: ./Resume/resume.pdf
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -76,6 +76,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add VERSION.txt README.md
+        git add ./Resume/VERSION.txt README.md
         git commit -m "Update version to $version" || echo "No changes to commit"
         git push
