@@ -1,85 +1,28 @@
-name: Compile Resume and Release
+name: LaTeX Document Build and Upload
 
 on:
   push:
     branches:
-      - main  # Change this to your default branch if necessary
+      - main  # Adjust to your default branch if necessary
 
 jobs:
-  build:
+  build_latex:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Set up Git repository
+        uses: actions/checkout@v4
 
-    - name: Set up TeX Live
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y texlive-latex-base texlive-fonts-recommended texlive-latex-extra texlive-fontawesome
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: Resume/Resume.tex  # Change to your main .tex file path
+          extra_system_packages: "texlive-fontawesome"  # Install FontAwesome package
+          texlive_version: latest  # Use the latest TeXLive version
+          latexmk_use_xelatex: true  # Use XeLaTeX for compiling
 
-    - name: Compile LaTeX to PDF
-      working-directory: ./Resume  # Working directory where Resume.tex is located
-      run: |
-        pdflatex Resume.tex
-        pdflatex Resume.tex  # Run twice to resolve references
-
-    - name: Read current version
-      id: read_version
-      working-directory: ./Resume  # Working directory for version file
-      run: |
-        current_version=$(cat VERSION.txt)
-        echo "Current version is $current_version"
-        echo "::set-output name=current_version::$current_version"
-
-    - name: Increment version
-      id: increment_version
-      working-directory: ./Resume  # Working directory for version file
-      run: |
-        IFS='.' read -r major minor patch <<< "${{ steps.read_version.outputs.current_version }}"
-        
-        # Check if the patch is 9
-        if [ "$patch" -eq 9 ]; then
-          patch=0
-          minor=$((minor + 1))  # Increment minor if patch is 9
-          
-          # Check if the minor is 10
-          if [ "$minor" -eq 10 ]; then
-            minor=0
-            major=$((major + 1))  # Increment major if minor is 10
-          fi
-        else
-          patch=$((patch + 1))  # Otherwise, increment patch
-        fi
-        
-        new_version="$major.$minor.$patch"
-        echo "New version is $new_version"
-        echo "$new_version" > VERSION.txt
-        echo "::set-output name=new_version::$new_version"
-
-    - name: Create Release
-      id: create_release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: v${{ steps.increment_version.outputs.new_version }}  # Tag based on new version
-        release_name: "Resume v${{ steps.increment_version.outputs.new_version }}"
-        files: ./Resume/Resume.pdf  # Update path to the generated PDF
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Update README.md
-      working-directory: ./Resume  # Working directory for README.md
-      run: |
-        version="v${{ steps.increment_version.outputs.new_version }}"
-        if grep -q "Current Resume Version:" README.md; then
-          sed -i "s/Current Resume Version: .*/Current Resume Version: $version/g" README.md
-        else
-          echo "Current Resume Version: $version" >> README.md
-        fi
-
-    - name: Commit and Push Changes
-      working-directory: ./Resume  # Working directory for commit and push
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-       
+      - name: Upload PDF file
+        uses: actions/upload-artifact@v4
+        with:
+          name: Compiled PDF
+          path: Resume/resume.pdf  # Change to match your output file path
