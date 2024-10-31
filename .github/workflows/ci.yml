@@ -3,7 +3,7 @@ name: Compile Resume and Release
 on:
   push:
     branches:
-      - main  # Change this to your default branch if necessary
+      - main  # Adjust this to your default branch if necessary
 
 jobs:
   build:
@@ -15,16 +15,17 @@ jobs:
 
     - name: Set up TeX Live
       run: |
-        sudo apt-get install texlive-full
+        sudo apt-get update
+        sudo apt-get install -y texlive-full
 
     - name: Compile LaTeX to PDF
       run: |
-        pdflatex ./Resume/Resume.tex 
-        pdflatex ./Resume/Resume.tex  # Run twice to resolve references
+        pdflatex -output-directory=./Resume ./Resume/Resume.tex
+        pdflatex -output-directory=./Resume ./Resume/Resume.tex  # Run twice for references
 
     - name: Check if PDF was created
       run: |
-        if [ ! -f ./Resume.pdf ]; then
+        if [ ! -f ./Resume/Resume.pdf ]; then
           echo "Resume.pdf not found!"
           exit 1
         fi
@@ -34,49 +35,48 @@ jobs:
       run: |
         current_version=$(cat ./Resume/VERSION.txt)
         echo "Current version is $current_version"
-        echo "::set-output name=current_version::$current_version"
+        echo "current_version=$current_version" >> $GITHUB_ENV
 
     - name: Increment version
       id: increment_version
       run: |
-        IFS='.' read -r major minor patch <<< "${{ steps.read_version.outputs.current_version }}"
+        IFS='.' read -r major minor patch <<< "$current_version"
         
-        # Check if the patch is 9
+        # Increment patch, rolling over to minor or major as needed
         if [ "$patch" -eq 9 ]; then
           patch=0
-          minor=$((minor + 1))  # Increment minor if patch is 9
+          minor=$((minor + 1))
           
-          # Check if the minor is 10
           if [ "$minor" -eq 10 ]; then
             minor=0
-            major=$((major + 1))  # Increment major if minor is 10
+            major=$((major + 1))
           fi
         else
-          patch=$((patch + 1))  # Otherwise, increment patch
+          patch=$((patch + 1))
         fi
         
         new_version="$major.$minor.$patch"
         echo "New version is $new_version"
         echo "$new_version" > ./Resume/VERSION.txt
-        echo "::set-output name=new_version::$new_version"
+        echo "new_version=$new_version" >> $GITHUB_ENV
 
     - name: List files for debug
-      run: ls -R  # Lists all files and directories recursively
+      run: ls -R  # Lists all files and directories recursively for troubleshooting
 
     - name: Create Release
       id: create_release
-      uses: softprops/action-gh-release@v1
+      uses: actions/checkout@v2
       with:
-        tag_name: v${{ steps.increment_version.outputs.new_version }}  # Tag based on new version
-        name: "Resume v${{ steps.increment_version.outputs.new_version }}"  # Use release_name instead of name
-        files: ./Resume.pdf
+        tag_name: "v${{ env.new_version }}"
+        name: "Resume v${{ env.new_version }}"
+        files: ./Resume/Resume.pdf
         draft: true  # Marks the release as a draft
       env:
-        GITHUB_TOKEN: ${{ GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Update README.md
       run: |
-        version="v${{ steps.increment_version.outputs.new_version }}"
+        version="v${{ env.new_version }}"
         if grep -q "Current Resume Version:" README.md; then
           sed -i "s/Current Resume Version: .*/Current Resume Version: $version/g" README.md
         else
@@ -89,4 +89,4 @@ jobs:
         git config --local user.name "GitHub Action"
         git add ./Resume/VERSION.txt README.md
         git commit -m "Update version to $version" || echo "No changes to commit"
-        git push
+        git push || echo "No changes to push"
