@@ -69,7 +69,7 @@ jobs:
 
     - name: Create Release with GitHub CLI
       env:
-        GH_CLI: ${{ secrets.GITHUB_TOKEN}}
+        GH_CLI: ${{ github.token }}
       run: |
         gh release create "v${{ env.new_version }}" ./Resume/Resume.pdf --title "Resume v${{ env.new_version }}" --notes "Automated release of Resume version ${{ env.new_version }}" --draft
 
