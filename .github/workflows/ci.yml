@@ -1,6 +1,7 @@
 name: Compile Resume and Release
 permissions:
   contents: write  # Allow write access to repository contents
+  workflows: write # Allow write access to workflows
 on:
   push:
     branches:
@@ -87,6 +88,7 @@ jobs:
     needs: build
     permissions:
       contents: write  # Allow write access to repository contents
+      workflows: write # Allow write access to workflows
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
