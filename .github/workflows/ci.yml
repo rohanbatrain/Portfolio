@@ -91,8 +91,7 @@ jobs:
       actions: write # Allow write access to workflows
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+
 
       - name: Create Release
         id: create_release
@@ -100,6 +99,8 @@ jobs:
           gh release create "v${{ env.new_version }}" ./Resume/Resume.pdf --title "Resume Release v${{ env.new_version }}" --notes "Release of Resume version v${{ env.new_version }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v3
 
     outputs:
       ReleaseTag: ${{ steps.create_release.outputs.release_tag }}
