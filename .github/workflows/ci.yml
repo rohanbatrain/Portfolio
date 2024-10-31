@@ -13,22 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up TeX Live
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y texlive-full
 
-    - name: Compile LaTeX to PDF
-      run: |
-        pdflatex -output-directory=./Resume ./Resume/Resume.tex
-        pdflatex -output-directory=./Resume ./Resume/Resume.tex  # Run twice for references
-
-    - name: Check if PDF was created
-      run: |
-        if [ ! -f ./Resume/Resume.pdf ]; then
-          echo "Resume.pdf not found!"
-          exit 1
-        fi
 
     - name: Read current version
       id: read_version
@@ -69,7 +54,7 @@ jobs:
 
     - name: Create Release with GitHub CLI
       env:
-        GH_CLI: ${{ github.token }}
+        GITHUB_TOKEN: ${{ github.token }}
       run: |
         gh release create "v${{ env.new_version }}" ./Resume/Resume.pdf --title "Resume v${{ env.new_version }}" --notes "Automated release of Resume version ${{ env.new_version }}" --draft
 
