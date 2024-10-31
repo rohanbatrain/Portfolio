@@ -14,22 +14,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Cache TeX Live
-      uses: actions/cache@v2
+    - name: Compile LaTeX to PDF using Docker
+      uses: docker://registry.gitlab.com/islandoftex/images/texlive:latest
       with:
-        path: /usr/local/texlive
-        key: ${{ runner.os }}-texlive-${{ hashFiles('**/*.tex') }}
-
-
-    - name: Set up TeX Live
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y texlive-full
-
-    - name: Compile LaTeX to PDF
-      run: |
-        pdflatex -output-directory=./Resume ./Resume/Resume.tex
-        pdflatex -output-directory=./Resume ./Resume/Resume.tex  # Run twice for references
+        args: |
+          sh -c "pdflatex -output-directory=/resume /resume/Resume.tex && \
+                  pdflatex -output-directory=/resume /resume/Resume.tex"  # Run twice for references
+      env:
+        INPUTS: ./Resume  # Provide the input directory if needed
 
     - name: Check if PDF was created
       run: |
@@ -97,26 +89,27 @@ jobs:
       contents: write  # Allow write access to repository contents
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Create Release
-        id: create_release
-        uses: nickatnight/releases-action@v5
-        with:
-          branch: "main"
-          name: "Resume Release v${{ env.new_version }}"
-          message: "Release of Resume version v${{ env.new_version }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create Release
+      id: create_release
+      uses: nickatnight/releases-action@v5
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        branch: "main"
+        name: "Resume Release v${{ env.new_version }}"
+        message: "Release of Resume version v${{ env.new_version }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Resume PDF
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}  # Ensure this references the correct output
-          asset_path: ./Resume/Resume.pdf
-          asset_name: Resume-v${{ env.new_version }}.pdf  # Use the version in the name
-          asset_content_type: application/pdf
+    - name: Upload Resume PDF
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./Resume/Resume.pdf
+        asset_name: Resume-v${{ env.new_version }}.pdf
+        asset_content_type: application/pdf
 
     outputs:
       ReleaseTag: ${{ steps.create_release.outputs.release_tag }}
