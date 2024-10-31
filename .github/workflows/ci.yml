@@ -18,8 +18,8 @@ jobs:
       uses: docker://registry.gitlab.com/islandoftex/images/texlive:latest
       with:
         args: |
-          sh -c "pdflatex -output-directory=/resume /resume/Resume.tex && \
-                  pdflatex -output-directory=/resume /resume/Resume.tex"  # Run twice for references
+          sh -c "pdflatex -output-directory=/Resume /Resume/Resume.tex && \
+                  pdflatex -output-directory=/Resume /Resume/Resume.tex"  # Run twice for references
       env:
         INPUTS: ./Resume  # Provide the input directory if needed
 
