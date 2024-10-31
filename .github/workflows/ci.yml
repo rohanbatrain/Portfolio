@@ -72,10 +72,11 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
+          version="v${{ env.new_version }}"
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add ./Resume/VERSION.txt README.md
-          git commit -m "Update version to $version" || echo "No changes to commit"
+          git commit -m "Update version to $version" 
           git push || echo "No changes to push"
 
       - name: Tag Release
