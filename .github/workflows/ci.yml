@@ -63,16 +63,19 @@ jobs:
     - name: List files for debug
       run: ls -R  # Lists all files and directories recursively for troubleshooting
 
-    - name: Create Release
-      id: create_release
-      uses: actions/checkout@v2
-      with:
-        tag_name: "v${{ env.new_version }}"
-        name: "Resume v${{ env.new_version }}"
-        files: ./Resume/Resume.pdf
-        draft: true  # Marks the release as a draft
+    - name: Install GitHub CLI
+      run: |
+        sudo apt-get install -y gh
+
+    - name: Authenticate GitHub CLI
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "$GITHUB_TOKEN" | gh auth login --with-token
+
+    - name: Create Release with GitHub CLI
+      run: |
+        gh release create "v${{ env.new_version }}" ./Resume/Resume.pdf --title "Resume v${{ env.new_version }}" --notes "Automated release of Resume version ${{ env.new_version }}" --draft
 
     - name: Update README.md
       run: |
