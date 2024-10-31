@@ -1,4 +1,4 @@
 # Version
 
 
-PortfolioCurrent Resume Version: v0.0.1
+PortfolioCurrent Resume Version: v0.0.2
