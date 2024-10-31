@@ -69,9 +69,9 @@ jobs:
 
     - name: Authenticate GitHub CLI
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_CLI: ${{ secrets.GH_CLI }}
       run: |
-        echo "$GITHUB_TOKEN" | gh auth login --with-token
+        echo "$GH_CLI" | gh auth login --with-token
 
     - name: Create Release with GitHub CLI
       run: |
