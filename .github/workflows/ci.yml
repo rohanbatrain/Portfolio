@@ -14,6 +14,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Cache TeX Live
+      uses: actions/cache@v2
+      with:
+        path: /usr/local/texlive
+        key: ${{ runner.os }}-texlive-${{ hashFiles('**/*.tex') }}
+
+
     - name: Set up TeX Live
       run: |
         sudo apt-get update
