@@ -88,7 +88,7 @@ jobs:
     needs: build
     permissions:
       contents: write  # Allow write access to repository contents
-      workflows: write # Allow write access to workflows
+      actions: write # Allow write access to workflows
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
