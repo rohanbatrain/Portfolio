@@ -1,7 +1,6 @@
 name: Compile Resume and Release
 permissions:
   contents: write  # Allow write access to repository contents
-
 on:
   push:
     branches:
@@ -16,16 +15,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Compile LaTeX to PDF using Docker
-      run: |
-        IMAGE="registry.gitlab.com/islandoftex/images/texlive:latest"
-        docker pull $IMAGE  # Pull the Docker image
-        
-        # Run the Docker container and compile the LaTeX file
-        docker run --rm \
-          -v "${{ github.workspace }}/Resume:/resume" \  # Map the Resume directory
-          $IMAGE \
-          sh -c "pdflatex -output-directory=/resume /resume/Resume.tex && \
-                  pdflatex -output-directory=/resume /resume/Resume.tex"  # Run twice for references
+      uses: docker://registry.gitlab.com/islandoftex/images/texlive:latest
+      with:
+        args: |
+          sh -c "pdflatex -output-directory=./Resume ./Resume/Resume.tex && \
+                  pdflatex -output-directory=./Resume ./Resume/Resume.tex"  # Run twice for references
+      env:
+        INPUTS: ./Resume  # Provide the input directory if needed
 
     - name: Check if PDF was created
       run: |
