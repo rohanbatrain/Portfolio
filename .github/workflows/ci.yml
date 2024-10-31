@@ -1,5 +1,6 @@
 name: Compile Resume and Release
-
+permissions:
+  contents: write  # Allow write access to repository contents
 on:
   push:
     branches:
