@@ -72,7 +72,7 @@ jobs:
         files: ./Resume.pdf
         draft: true  # Marks the release as a draft
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ GITHUB_TOKEN }}
 
     - name: Update README.md
       run: |
