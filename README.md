@@ -1,10 +1,14 @@
 # Version
 
-
 PortfolioCurrent Resume Version: v0.0.1
 
 
 # Portfolio & Resume
+
+
+![2](https://github.com/user-attachments/assets/7aa66053-5aa8-4e4d-8244-4a893fab946d)
+
+
 
 This repository currently hosts my professional resume along with an automated workflow that compiles and releases it as a LaTeX-generated PDF. While it presently focuses on my resume, I plan to expand this repository with more projects and content in the future.
 
