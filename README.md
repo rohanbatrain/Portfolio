@@ -1,7 +1,7 @@
 # Version
 
 Generic Resume Version: v0.0.3
-SoftwareEngineering Resume Version: v0.0.4
+SoftwareEngineering Resume Version: v0.0.5
 
 # Portfolio & Resume
 
