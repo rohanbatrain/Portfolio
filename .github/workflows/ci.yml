@@ -92,7 +92,9 @@ jobs:
 
       - name: Rename PDF for release
         run: |
+          version="${{ steps.increment_version.outputs.new_version }}"
           cp ./Resume/${{ matrix.variant }}/Resume.pdf ./RohanBatra-${{ matrix.variant }}.pdf
+          cp ./Resume/${{ matrix.variant }}/Resume.pdf ./${{ matrix.variant }}-${version}.pdf
 
       - name: Update README.md
         run: |
@@ -107,13 +109,39 @@ jobs:
             sed -i "/# Version/a $variant Resume Version: $version" README.md
           fi
 
-      - name: Commit and Push Changes
+      - name: Commit and Push Changes to Portfolio repo
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add ./Resume/${{ matrix.variant }}/VERSION.txt README.md
           git commit -m "Update ${{ matrix.variant }} version to v${{ steps.increment_version.outputs.new_version }}" || echo "No changes to commit"
           git pull --rebase
+          git push || echo "No changes to push"
+
+      - name: Checkout rohan_batra landing repo
+        uses: actions/checkout@v3
+        with:
+          repository: rohanbatrain/rohan_batra
+          ref: landing
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: rohan_batra_landing
+
+      - name: Push PDF to rohan_batra landing repo
+        run: |
+          version="${{ steps.increment_version.outputs.new_version }}"
+          variant="${{ matrix.variant }}"
+          
+          # Create resume directory structure if it doesn't exist
+          mkdir -p rohan_batra_landing/resume/${{ matrix.variant }}
+          
+          # Copy PDF as RohanBatra.pdf
+          cp ./Resume/${{ matrix.variant }}/Resume.pdf rohan_batra_landing/resume/${{ matrix.variant }}/RohanBatra.pdf
+          
+          cd rohan_batra_landing
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add resume/${{ matrix.variant }}/RohanBatra.pdf
+          git commit -m "Update $variant resume to version $version" || echo "No changes to commit"
           git push || echo "No changes to push"
 
       - name: Create Release
