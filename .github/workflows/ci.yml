@@ -123,7 +123,7 @@ jobs:
         with:
           repository: rohanbatrain/rohan_batra
           ref: landing
-          token: ${{ secrets.GH_CLI }}
+          token: ${{ secrets.GH_TOKEN }}
           path: rohan_batra_landing
 
       - name: Push PDF to rohan_batra landing repo
@@ -354,4 +354,4 @@ jobs:
             --title "$variant Resume Release $version" \
             --notes "Release of $variant resume version $version"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
