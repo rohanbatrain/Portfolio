@@ -24,11 +24,12 @@ jobs:
         run: |
           # Get list of changed files
           if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
-            # First push, build all variants
-            CHANGED_VARIANTS=$(ls -d Resume/*/ | xargs -I {} basename {} | jq -R -s -c 'split("\n")[:-1]')
+            # First push, build all variants (only directories with Resume.tex)
+            CHANGED_VARIANTS=$(find Resume -mindepth 1 -maxdepth 1 -type d -exec test -f {}/Resume.tex \; -exec basename {} \; | jq -R -s -c 'split("\n")[:-1]')
           else
             CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-            CHANGED_VARIANTS=$(echo "$CHANGED_FILES" | grep "^Resume/" | cut -d'/' -f2 | sort -u | jq -R -s -c 'split("\n")[:-1] | map(select(length > 0))')
+            # Only include directories that contain Resume.tex
+            CHANGED_VARIANTS=$(echo "$CHANGED_FILES" | grep "^Resume/[^/]*/Resume.tex$" | cut -d'/' -f2 | sort -u | jq -R -s -c 'split("\n")[:-1] | map(select(length > 0))')
           fi
           
           if [ "$CHANGED_VARIANTS" = "[]" ] || [ -z "$CHANGED_VARIANTS" ]; then
