@@ -1,6 +1,6 @@
 # Version
 
-Generic Resume Version: v0.0.2
+Generic Resume Version: v0.0.3
 Visa Resume Version: v0.0.3
 
 # Portfolio & Resume
