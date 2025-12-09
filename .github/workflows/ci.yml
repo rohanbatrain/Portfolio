@@ -93,8 +93,7 @@ jobs:
       - name: Rename PDF for release
         run: |
           version="${{ steps.increment_version.outputs.new_version }}"
-          cp ./Resume/${{ matrix.variant }}/Resume.pdf ./RohanBatra-${{ matrix.variant }}.pdf
-          cp ./Resume/${{ matrix.variant }}/Resume.pdf ./${{ matrix.variant }}-${version}.pdf
+          cp ./Resume/${{ matrix.variant }}/Resume.pdf ./RohanBatra.pdf
 
       - name: Update README.md
         run: |
@@ -350,7 +349,7 @@ jobs:
           
           # Create release
           gh release create "$tag" \
-            ./RohanBatra-${{ matrix.variant }}.pdf \
+            ./RohanBatra.pdf \
             --title "$variant Resume Release $version" \
             --notes "Release of $variant resume version $version"
         env:
