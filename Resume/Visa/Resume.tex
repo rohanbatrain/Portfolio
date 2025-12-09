@@ -1,0 +1,162 @@
+%-------------------------
+% Resume for Visa Applications
+% Author : Rohan Batra
+% Optimized for visa/immigration requirements
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% ----------- MARGIN TUNING FOR 1 PAGE -----------
+\addtolength{\oddsidemargin}{-0.55in}
+\addtolength{\textwidth}{1.15in}
+\addtolength{\topmargin}{-0.65in}
+\addtolength{\textheight}{1.35in}
+
+\raggedright
+\setlength{\tabcolsep}{0pt}
+\setlength{\parskip}{0pt}
+
+% ----------- SECTION SPACING -----------
+\titleformat{\section}{
+  \vspace{-6pt}\scshape\raggedright\large
+}{}{0em}{}[\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+
+\newcommand{\resumeItem}[1]{
+  \item\small{#1}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & #2 \\
+    \textit{\small#3} & \textit{\small #4} \\
+  \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+  \item
+  \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+    \small#1 & #2 \\
+  \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.12in, label={}, topsep=0pt]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[noitemsep, topsep=0pt, leftmargin=0.15in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\vspace{-12pt}
+\begin{center}
+    \textbf{\Huge \scshape Rohan Batra} \\ \vspace{1pt}
+    \small 741-787-9921 $|$ 
+    \href{mailto:contact@rohanbatra.in}{contact@rohanbatra.in} $|$
+    \href{https://linkedin.com/in/rohanbatrain}{linkedin.com/in/rohanbatrain} $|$
+    \href{https://github.com/rohanbatrain}{github.com/rohanbatrain} $|$
+    \href{https://rohanbatra.in}{rohanbatra.in}
+\end{center}
+\vspace{-10pt}
+
+%-----------EDUCATION-----------
+\section{Education}
+\resumeSubHeadingListStart
+  \resumeSubheading
+    {UPES Dehradun}{Dehradun, India}
+    {B.Tech. in Computer Science and Engineering}{Expected Aug 2027}
+  \resumeItemListStart
+    \resumeItem{Cumulative GPA: 7.97 $|$ Coursework: Data Structures, OOPS with C++, DBMS, OS}
+  \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+\resumeSubHeadingListStart
+
+  \resumeSubheading
+    {Software Engineer Intern}{Nov 2025 -- Present}
+    {Techymonks}{Bangalore, India (Remote)}
+  \resumeItemListStart
+    \resumeItem{Developing secure full-stack modules using \textbf{Agile/SDLC} practices.}
+    \resumeItem{Applying \textbf{OWASP Top 10} security controls for sensitive data protection.}
+    \resumeItem{Building \textbf{WCAG 2.0}-compliant accessible and responsive UI components.}
+    \resumeItem{Collaborating cross-functionally with design and backend teams.}
+  \resumeItemListEnd
+
+  \resumeSubheading
+    {Technical Head}{Sep 2025 -- Present}
+    {\href{https://www.linkedin.com/company/gdsc-upes/}{Google Developer Groups On Campus (GDGOC) UPES}}{Dehradun, India}
+  \resumeItemListStart
+    \resumeItem{Delivered \href{https://www.linkedin.com/posts/rohanbatrain_cloudnative-gdg-engineering-activity-7400975128945283072-RaC4}{\underline{large-scale technical workshops}} to 100+ attendees; strengthened public speaking.}
+    \resumeItem{Led cross-functional teams; demonstrated leadership by influence.}
+    \resumeItem{Mentored juniors in cloud, web, and system design fundamentals.}
+  \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+\resumeSubHeadingListStart
+
+  \resumeProjectHeading
+    {\href{https://github.com/rohanbatrain/Karmstrot-Builds}{\textbf{Karmstrot Builds (Android \& C++)}} $|$ \emph{C++, Shell, Android SDK}}{Aug 2024 -- Present}
+  \begin{itemize}[leftmargin=0.15in, label={\small\textbullet}, noitemsep, topsep=0pt]
+    \item\small{Built automated integration scripts for Android KernelSU using Shell and C++.}
+    \item\small{Modified system-level configurations using the Android SDK across devices.}
+    \item\small{Applied structured SDLC practices for versioning and QA validation.}
+  \end{itemize}
+
+  \resumeProjectHeading
+    {\href{https://github.com/rohanbatrain/second_brain_database}{\textbf{Second Brain Database}} $|$ \emph{Python, FastAPI, Redis, OAuth, RBAC}}{Nov 2024 -- Present}
+  \begin{itemize}[leftmargin=0.15in, label={\small\textbullet}, noitemsep, topsep=0pt]
+    \item\small{Developed secure APIs using OAuth2 and RBAC for sensitive data protection.}
+    \item\small{Designed optimized relational schemas for fast data retrieval.}
+    \item\small{Containerized services with Docker enabling CI/CD stability.}
+  \end{itemize}
+
+  \resumeProjectHeading
+    {\href{https://github.com/rohanbatrain/proxmox-auto-install-assistant-docker}{\textbf{Proxmox Auto-Install Assistant}} $|$ \emph{Automation, Infrastructure}}{Jan 2025 -- Present}
+  \begin{itemize}[leftmargin=0.15in, label={\small\textbullet}, noitemsep, topsep=0pt]
+    \item\small{Automated Linux installer reducing manual configuration time by 80\%.}
+    \item\small{Improved usability of complex system partitioning workflows.}
+  \end{itemize}
+
+\resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+\begin{itemize}[leftmargin=0.15in, label={}, topsep=0pt]
+\small{\item{
+ \textbf{Languages}{: C/C++, Python, JavaScript, HTML, CSS, SQL, Bash} \\
+ \textbf{Web \& Mobile}{: Responsive Design, Android SDK, REST APIs, OOD} \\
+ \textbf{Systems}{: Linux, Docker, CI/CD, GitHub Actions} \\
+ \textbf{Security \& Accessibility}{: OAuth2, RBAC, OWASP, WCAG 2.0} \\
+ \textbf{Productivity}{: MS Excel, Word, PowerPoint, VS Code, Git}
+}}
+\end{itemize}
+
+\end{document}

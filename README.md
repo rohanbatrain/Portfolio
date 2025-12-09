@@ -1,7 +1,7 @@
 # Version
 
-PortfolioCurrent Resume Version: v0.0.1
-
+Generic Resume Version: v0.0.1
+Visa Resume Version: v0.0.1
 
 # Portfolio & Resume
 
@@ -14,10 +14,13 @@ This repository currently hosts my professional resume along with an automated w
 
 ## Resume
 
-- **Directory:** `resume/`
-- **Description:** Contains the LaTeX source for my resume.
-- **GitHub Action:** An automated workflow compiles the LaTeX document and publishes the resulting PDF to GitHub Releases whenever updates are pushed.
-- **Usage:** Simply update the LaTeX files in the `resume/` directory; the GitHub Action will ensure that the latest version of my resume is always available via the Releases section.
+- **Directory:** `Resume/`
+- **Description:** Contains multiple LaTeX resume variants optimized for different purposes.
+- **Structure:**
+  - `Resume/Generic/` - General-purpose resume with all experience
+  - `Resume/Visa/` - Visa/immigration optimized resume
+- **GitHub Action:** An automated workflow detects changes, compiles only modified variants, and publishes them as separate releases with independent versioning.
+- **Usage:** Update the LaTeX files in the specific variant directory (e.g., `Resume/Visa/Resume.tex`); the GitHub Action will compile that variant, increment its version, and create a tagged release (e.g., `visa-v0.0.2`).
 
 ## Future Plans
 
@@ -31,11 +34,11 @@ I plan to add more projects and portfolio items to this repository. For now, it 
    ```
 2. **Navigate to the Resume Directory**
    ```bash
-   cd Portfolio/resume
+   cd Portfolio/Resume
    ```
 3. **Update and Customize**
-   - Edit the LaTeX files as needed to update the resume.
-   - The GitHub Action will automatically compile and release the updated PDF.
+   - Edit the LaTeX files in the specific variant directory (e.g., `Resume/Generic/Resume.tex`)
+   - The GitHub Action will automatically detect changes, compile only modified variants, increment their versions, and create separate tagged releases.
 
 ## Contributing
 

@@ -1,53 +1,82 @@
-name: Compile Resume and Release
+name: Multi-Variant Resume Release
 permissions:
-  contents: write  # Allow write access to repository contents
+  contents: write
   actions: write
+
 on:
   push:
     branches:
-      - main  # Adjust this to your default branch if necessary
+      - main
 
 jobs:
-  build:
+  detect-changes:
     runs-on: ubuntu-latest
-
+    outputs:
+      variants: ${{ steps.detect.outputs.variants }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
 
-      - name: Compile LaTeX to PDF using Docker
+      - name: Detect changed variants
+        id: detect
+        run: |
+          # Get list of changed files
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            # First push, build all variants
+            CHANGED_VARIANTS=$(ls -d Resume/*/ | xargs -I {} basename {} | jq -R -s -c 'split("\n")[:-1]')
+          else
+            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+            CHANGED_VARIANTS=$(echo "$CHANGED_FILES" | grep "^Resume/" | cut -d'/' -f2 | sort -u | jq -R -s -c 'split("\n")[:-1] | map(select(length > 0))')
+          fi
+          
+          if [ "$CHANGED_VARIANTS" = "[]" ] || [ -z "$CHANGED_VARIANTS" ]; then
+            echo "variants=[]" >> $GITHUB_OUTPUT
+          else
+            echo "variants=$CHANGED_VARIANTS" >> $GITHUB_OUTPUT
+          fi
+          echo "Changed variants: $CHANGED_VARIANTS"
+
+  build-and-release:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.variants != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        variant: ${{ fromJson(needs.detect-changes.outputs.variants) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Compile LaTeX to PDF
         uses: docker://registry.gitlab.com/islandoftex/images/texlive:latest
         with:
           args: |
-            sh -c "pdflatex -output-directory=./Resume ./Resume/Resume.tex && \
-                    pdflatex -output-directory=./Resume ./Resume/Resume.tex"  # Run twice for references
-        env:
-          INPUTS: ./Resume  # Provide the input directory if needed
+            sh -c "pdflatex -output-directory=./Resume/${{ matrix.variant }} ./Resume/${{ matrix.variant }}/Resume.tex && \
+                   pdflatex -output-directory=./Resume/${{ matrix.variant }} ./Resume/${{ matrix.variant }}/Resume.tex"
 
       - name: Check if PDF was created
         run: |
-          if [ ! -f ./Resume/Resume.pdf ]; then
-            echo "Resume.pdf not found!"
+          if [ ! -f ./Resume/${{ matrix.variant }}/Resume.pdf ]; then
+            echo "Resume.pdf not found for ${{ matrix.variant }}!"
             exit 1
           fi
 
       - name: Read current version
         id: read_version
         run: |
-          current_version=$(cat ./Resume/VERSION.txt)
-          echo "Current version is $current_version"
-          echo "current_version=$current_version" >> $GITHUB_ENV
+          current_version=$(cat ./Resume/${{ matrix.variant }}/VERSION.txt)
+          echo "current_version=$current_version" >> $GITHUB_OUTPUT
 
       - name: Increment version
         id: increment_version
         run: |
-          IFS='.' read -r major minor patch <<< "$current_version"
+          IFS='.' read -r major minor patch <<< "${{ steps.read_version.outputs.current_version }}"
           
-          # Increment patch, rolling over to minor or major as needed
           if [ "$patch" -eq 9 ]; then
             patch=0
             minor=$((minor + 1))
-            
             if [ "$minor" -eq 10 ]; then
               minor=0
               major=$((major + 1))
@@ -57,41 +86,49 @@ jobs:
           fi
           
           new_version="$major.$minor.$patch"
-          echo "New version is $new_version"
-          echo "$new_version" > ./Resume/VERSION.txt
-          echo "new_version=$new_version" >> $GITHUB_ENV
+          echo "$new_version" > ./Resume/${{ matrix.variant }}/VERSION.txt
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
+
+      - name: Rename PDF for release
+        run: |
+          cp ./Resume/${{ matrix.variant }}/Resume.pdf ./RohanBatra-${{ matrix.variant }}.pdf
 
       - name: Update README.md
         run: |
-          version="v${{ env.new_version }}"
-          if grep -q "Current Resume Version:" README.md; then
-            sed -i "s/Current Resume Version: .*/Current Resume Version: $version/g" README.md
+          version="v${{ steps.increment_version.outputs.new_version }}"
+          variant="${{ matrix.variant }}"
+          
+          # Update or add version line for this variant
+          if grep -q "$variant Resume Version:" README.md; then
+            sed -i "s/$variant Resume Version: .*/$variant Resume Version: $version/g" README.md
           else
-            echo "Current Resume Version: $version" >> README.md
+            # Add new line after the Version header
+            sed -i "/# Version/a $variant Resume Version: $version" README.md
           fi
 
       - name: Commit and Push Changes
         run: |
-          version="v${{ env.new_version }}"
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add ./Resume/VERSION.txt README.md
-          git commit -m "Update version to $version" 
+          git add ./Resume/${{ matrix.variant }}/VERSION.txt README.md
+          git commit -m "Update ${{ matrix.variant }} version to v${{ steps.increment_version.outputs.new_version }}" || echo "No changes to commit"
+          git pull --rebase
           git push || echo "No changes to push"
 
-      - name: Tag Release
-        id: tag_release
-        run: |
-          git tag -a "v${{ env.new_version }}" -m "Release version ${{ env.new_version }}"
-          git push origin "v${{ env.new_version }}"
-
-
       - name: Create Release
-        id: create_release
         run: |
-          gh release create "v${{ env.new_version }}" ./Resume/Resume.pdf --title "Resume Release v${{ env.new_version }}" --notes "Release of Resume version v${{ env.new_version }}"
+          variant="${{ matrix.variant }}"
+          version="v${{ steps.increment_version.outputs.new_version }}"
+          tag="${variant,,}-${version}"
+          
+          # Create and push tag
+          git tag -a "$tag" -m "$variant Resume Release $version" || echo "Tag exists"
+          git push origin "$tag" || echo "Tag already pushed"
+          
+          # Create release
+          gh release create "$tag" \
+            ./RohanBatra-${{ matrix.variant }}.pdf \
+            --title "$variant Resume Release $version" \
+            --notes "Release of $variant resume version $version"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    outputs:
-      ReleaseTag: ${{ steps.create_release.outputs.release_tag }}
