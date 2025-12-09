@@ -1,7 +1,7 @@
 # Version
 
 Generic Resume Version: v0.0.3
-Visa Resume Version: v0.0.4
+SoftwareEngineering Resume Version: v0.0.4
 
 # Portfolio & Resume
 
@@ -18,9 +18,9 @@ This repository currently hosts my professional resume along with an automated w
 - **Description:** Contains multiple LaTeX resume variants optimized for different purposes.
 - **Structure:**
   - `Resume/Generic/` - General-purpose resume with all experience
-  - `Resume/Visa/` - Visa/immigration optimized resume
+  - `Resume/SoftwareEngineering/` - Software Engineering role-focused resume
 - **GitHub Action:** An automated workflow detects changes, compiles only modified variants, and publishes them as separate releases with independent versioning.
-- **Usage:** Update the LaTeX files in the specific variant directory (e.g., `Resume/Visa/Resume.tex`); the GitHub Action will compile that variant, increment its version, and create a tagged release (e.g., `visa-v0.0.2`).
+- **Usage:** Update the LaTeX files in the specific variant directory (e.g., `Resume/SoftwareEngineering/Resume.tex`); the GitHub Action will compile that variant, increment its version, and create a tagged release (e.g., `softwareengineering-v0.0.2`).
 
 ## Future Plans
 

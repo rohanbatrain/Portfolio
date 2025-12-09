@@ -1,6 +1,6 @@
 # SOP: Adding a New Resume Variant
 
-This document provides step-by-step instructions for adding new resume variants (e.g., for different companies like Google, Amazon, etc.) to the automated build and release system.
+This document provides step-by-step instructions for adding new resume variants (e.g., for different roles like SoftwareEngineering, DataScience, ProductManagement, etc.) to the automated build and release system.
 
 ## Overview
 
@@ -8,7 +8,7 @@ The resume system supports multiple variants, each with:
 - Independent LaTeX source files
 - Separate version tracking
 - Automated compilation and releases
-- Company-specific release tags (e.g., `google-v0.0.1`)
+- Role-specific release tags (e.g., `softwareengineering-v0.0.1`)
 
 ## Directory Structure
 
@@ -17,10 +17,10 @@ Resume/
 ├── Generic/
 │   ├── Resume.tex
 │   └── VERSION.txt
-├── Visa/
+├── SoftwareEngineering/
 │   ├── Resume.tex
 │   └── VERSION.txt
-├── Google/          # Example new variant
+├── DataScience/          # Example new variant
 │   ├── Resume.tex
 │   └── VERSION.txt
 └── ADDING_NEW_VARIANT.md (this file)
@@ -32,23 +32,23 @@ Resume/
 
 ```bash
 cd Resume
-mkdir <CompanyName>  # e.g., mkdir Google
+mkdir <RoleName>  # e.g., mkdir DataScience
 ```
 
-**Important:** Use PascalCase for directory names (e.g., `Google`, `Amazon`, `Microsoft`)
+**Important:** Use PascalCase for directory names (e.g., `SoftwareEngineering`, `DataScience`, `ProductManagement`)
 
 ### Step 2: Create the LaTeX File
 
 Copy an existing resume variant as a starting point:
 
 ```bash
-cp Generic/Resume.tex <CompanyName>/Resume.tex
+cp Generic/Resume.tex <RoleName>/Resume.tex
 ```
 
-Edit `<CompanyName>/Resume.tex` to customize for the target company:
-- Tailor experience descriptions
-- Highlight relevant skills
-- Adjust projects based on company focus
+Edit `<RoleName>/Resume.tex` to customize for the target role:
+- Tailor experience descriptions to highlight role-relevant work
+- Emphasize skills and technologies specific to the role
+- Adjust projects to showcase role-appropriate expertise
 - Modify sections as needed
 
 ### Step 3: Create the Version File
@@ -56,14 +56,14 @@ Edit `<CompanyName>/Resume.tex` to customize for the target company:
 Initialize the version tracking:
 
 ```bash
-echo "0.0.1" > <CompanyName>/VERSION.txt
+echo "0.0.1" > <RoleName>/VERSION.txt
 ```
 
 ### Step 4: Commit and Push
 
 ```bash
-git add Resume/<CompanyName>/
-git commit -m "Add <CompanyName> resume variant"
+git add Resume/<RoleName>/
+git commit -m "Add <RoleName> resume variant"
 git push origin main
 ```
 
@@ -71,10 +71,10 @@ git push origin main
 
 The GitHub Action will automatically:
 1. Detect the new variant
-2. Compile `<CompanyName>/Resume.tex` to PDF
+2. Compile `<RoleName>/Resume.tex` to PDF
 3. Increment version to v0.0.1
-4. Create a release with tag `<companyname>-v0.0.1` (lowercase)
-5. Upload `RohanBatra-<CompanyName>.pdf` to the release
+4. Create a release with tag `<rolename>-v0.0.1` (lowercase)
+5. Upload `RohanBatra-<RoleName>.pdf` to the release
 
 Check:
 - GitHub Actions tab for successful workflow run
@@ -93,10 +93,10 @@ Each variant has independent versioning:
 - Minor rolls over at .10 (0.9.x → 1.0.0)
 
 ### Release Naming
-- **Tag:** `<companyname>-v0.0.1` (lowercase variant name)
-- **Title:** `<CompanyName> Resume Release v0.0.1`
-- **PDF:** `RohanBatra-<CompanyName>.pdf`
-- **Notes:** `Release of <CompanyName> resume version v0.0.1`
+- **Tag:** `<rolename>-v0.0.1` (lowercase variant name)
+- **Title:** `<RoleName> Resume Release v0.0.1`
+- **PDF:** `RohanBatra-<RoleName>.pdf`
+- **Notes:** `Release of <RoleName> resume version v0.0.1`
 
 ## Updating Existing Variants
 
