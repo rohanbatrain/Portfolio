@@ -1,0 +1,174 @@
+%-------------------------
+% Resume in Latex
+% Author : Rohan Batra
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Rohan Batra} \\ \vspace{1pt}
+    \small 741-787-9921 $|$ \href{mailto:contact@rohanbatra.in}{\underline{contact@rohanbatra.in}} $|$
+    \href{https://linkedin.com/in/rohanbatrain}{\underline{linkedin.com/in/rohanbatrain}} $|$
+    \href{https://github.com/rohanbatrain}{\underline{github.com/rohanbatrain}} $|$
+    \href{https://rohanbatra.in}{\underline{rohanbatra.in}}
+\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {UPES Dehradun}{Dehradun, India}
+      {B.Tech. in Computer Science and Engineering}{Expected Aug 2027}
+      \resumeItemListStart
+        \resumeItem{Cumulative GPA: 7.97}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Software Engineer Intern}{Nov 2025 -- Present}
+      {Techymonks}{Bangalore, India (Remote)}
+      \resumeItemListStart
+        \resumeItem{Focusing on full-stack development with exposure to secure software lifecycle and CI/CD best practices.}
+        \resumeItem{Working directly with the Director to build resilient, scalable systems applying security-by-design principles.}
+        \resumeItem{Collaborating within an Agile team to deliver production-ready components with automated workflows.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Technical Head}{Sep 2025 -- Present}
+      {Google Developer Groups On Campus (GDGOC) UPES}{Dehradun, India}
+      \resumeItemListStart
+        \resumeItem{Leading and mentoring 5 technical leads and contributor teams, ensuring high-quality engineering outcomes.}
+        \resumeItem{Managing technical execution of large events with cross-functional coordination and infrastructure reliability.}
+        \resumeItem{Driving upskilling initiatives focused on cloud, automation, and modern development workflows.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Co-Founder}{Sep 2023 -- Apr 2025}
+      {LinuxWale}{Dehradun, India}
+      \resumeItemListStart
+        \resumeItem{Initiative focused on teaching Linux fundamentals, digital freedom, and FOSS adoption.}
+        \resumeItem{Assisted 5–10 individuals in migrating from Windows to Linux, learning terminal basics, system architecture, and choosing their own operating system.}
+        \resumeItem{Co-founded the community with \href{https://harshdeepsingh.in}{\underline{Harshdeep Singh}} before transitioning to full-time work on the Second Brain Database.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+      
+      \resumeProjectHeading
+          {\textbf{Second Brain Database} $|$ \emph{Python, FastAPI, MongoDB, Redis, Docker, LangChain}}{Nov 2024 -- Present}
+          \resumeItemListStart
+            \resumeItem{Designed a secure, scalable KBMS using \textbf{FastAPI} and \textbf{Motor} with asynchronous backend architecture.}
+            \resumeItem{Integrated AI agents via \textbf{LangChain/LangGraph} and \textbf{Ollama} with real-time processing using \textbf{LiveKit} and \textbf{Deepgram}.}
+            \resumeItem{Implemented \textbf{JWT/OAuth/MFA}, rate limiting, and secure API design with RBAC-based workspace control.}
+            \resumeItem{Set up a DevSecOps pipeline using \textbf{GitHub Actions, Prometheus, Loki}, and automated vulnerability scanning.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{IPAM (powered by Second Brain Database)}}{Sep 2025 -- Present}
+          \resumeItemListStart
+            \resumeItem{Developed a hierarchical IP Address Management for 10.X.Y.Z IPv4 spaces with automated allocation logic.}
+            \resumeItem{Engineered multi-tenant isolation with \textbf{RBAC}, secure namespaces, and infrastructure-hardening practices.}
+            \resumeItem{Built automated reservation and monitoring workflows with webhook notifications and expiry logic.}
+            \resumeItem{Implemented audit trails, utilization analytics, and anomaly indicators to prevent misconfiguration.}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Python, Bash/Shell, HTML, YAML, SQL, MongoDB} \\
+     \textbf{Frameworks}{: FastAPI, Celery, LangChain, LangGraph, FastMCP, Uvicorn} \\
+     \textbf{Developer Tools}{: Git, Docker, GitHub Actions, Make, Prometheus, Loki, Bandit, pytest, security scanners} \\
+     \textbf{Security \& DevSecOps}{: JWT/OAuth/MFA, API security, RBAC, CI/CD security integration, SIEM basics, vulnerability assessment} \\
+     \textbf{Libraries \& APIs}{: Motor, Redis, Pydantic, Cryptography, Deepgram, LiveKit, FFmpeg, Qdrant, Ollama}
+    }}}
+ \end{itemize}
+
+%-------------------------------------------
+\end{document}
+
+
+Cybersecurity resume 
